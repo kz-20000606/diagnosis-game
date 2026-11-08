@@ -48,9 +48,18 @@ function surface(x,y,z){
   d=smoothMin(d,ball(x,y,z,.20,-.58,-.16,.27,.30,.29),.25);
   // A narrowing continuous root/bridge replaces the abrupt oval at the base.
   d=smoothMin(d,cap(x,y,z,0,-.31,-.10,0,-.08,.36,.30),.31);
-  // One main soft shaft with gentle curvature rather than a stack of primitives.
-  d=smoothMin(d,cap(x,y,z,0,-.10,.19,.045,.14,1.45,.255),.24);
-  d=smoothMin(d,ball(x,y,z,.047,.16,1.48,.285,.29,.325),.21);
+  // A gently curved continuous shaft. Its terminal radius narrows before
+  // the head, leaving a visible neck instead of a featureless oval.
+  d=smoothMin(d,cap(x,y,z,0,-.10,.19,.044,.13,1.35,.244),.21);
+  // Rounded glans: minimal blending preserves a distinct projecting corona.
+  // All features remain softly shaded and fully covered by the pixel mosaic.
+  const head=ball(x,y,z,.049,.16,1.52,.314,.315,.296);
+  d=Math.min(d,head+.013);
+  // Subtle raised rim around the rear of the head (coronal ridge).
+  const axial=z-1.352;
+  const radial=Math.hypot(x-.047,y-.15);
+  const rim=Math.hypot((radial-.268)/.056,axial/.067)-1;
+  d=Math.min(d,rim*.044);
   // Mild asymmetry; no hard stripes and no seam between joined pieces.
   return d+0.009*Math.sin(4.1*y+2.4*x)*Math.sin(3.1*z-1.7*x);
 }
